@@ -51,7 +51,7 @@ My pipeline consisted of multiple steps:
 ```	
 	
 - The resulting grayscale blurred image with the previous steps can be seen below:
-	![alt text](https://github.com/willog11/UdacityCarND-LaneLines-Proj1/tree/master/test_images_output/solidYellowCurve2_yellowWhiteEnhancement.JPG)
+	![alt text](https://github.com/willog11/UdacityCarND-LaneLines-Proj1/tree/master/test_images_output/solidYellowCurve2_yellowWhiteEnhancement.jpg)
 	
  - Now that a clean grayscale image is produced (reduction in noise and
    FP potentials) the next step is to run the canny algorithm on it. And
@@ -71,7 +71,7 @@ My pipeline consisted of multiple steps:
 	
 - The resulting image is as follows:
 
-	![alt text](https://github.com/willog11/UdacityCarND-LaneLines-Proj1/tree/master/test_images_output/solidYellowCurve2_canny_maskedArea.JPG)
+	![alt text](https://github.com/willog11/UdacityCarND-LaneLines-Proj1/tree/master/test_images_output/solidYellowCurve2_canny_maskedArea.jpg)
 	
 
 - From here the hough transform is called which in turn calls the draw_lines() which was adapted to handle line extrapolation and logic to decide where in the image the line was

@@ -134,10 +134,22 @@ My pipeline consisted of multiple steps, at each point matplotlib was used to ge
 
 ![Final Lines](test_images_output/final_line_outputs.jpg)
 
-**Solid White Right Result**
+**Solid White Right Video Result**
+
 ![Final Lines Video 1](test_videos_output/solidWhiteRight.gif)
 
+**Solid Yellow Left Video Result**
 
+![Final Lines Video 2](test_videos_output/solidYellowLeft.gif)
+
+
+Finally the challenge video was tested. The only modification that had to be made was changing to ROI area to suit this vehice. This is a normal limitation for setting ROI according to image area and not vehicle co-ordinates when developing a CV algorithm for release on multiple vehicle types
+
+**Challenge Video Result**
+
+![Final Lines Video 3](test_videos_output/challenge.gif)
+
+Note: All videos can be found in the test_videos_output folder
 
 ### 2. Identify potential shortcomings with your current pipeline
 

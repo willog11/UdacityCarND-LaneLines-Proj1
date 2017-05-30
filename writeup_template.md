@@ -51,7 +51,7 @@ My pipeline consisted of multiple steps:
 ```	
 	
 - The resulting grayscale blurred image with the previous steps can be seen below:
-![HSL Improvments]<img src="test_images_output/solidYellowCurve2_yellowWhiteEnhancement.jpg width="480" alt="HSL space enhancements" />
+![HSL Improvments](test_images_output/solidYellowCurve2_yellowWhiteEnhancement.JPG?raw=true)
 	
  - Now that a clean grayscale image is produced (reduction in noise and
    FP potentials) the next step is to run the canny algorithm on it. And

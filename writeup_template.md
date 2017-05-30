@@ -23,7 +23,7 @@ The goals / steps of this project are the following:
 
 ### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
 
-My pipeline consisted of multiple steps:
+My pipeline consisted of multiple steps, at each point matplotlib was used to generate images at each step and for each test image. The resulting images can be found in the test_images_output folder.
 
  - Convert the image to HSL initially and apply perfrom some bitwise operations which enhances yellow and white lines
 	- Previous experience with grayscale images and detection of lanes has	   thought me that some lanes depending on lighthing conditions, road surface and lane mark colour can be very difficult to even see in the raw image. Thus by viewing the image in HSL and extracting the correct range of values and re-applying to the RGB image before converting to grayscale, it aids in not only enhancing white and yellow markings but also removes many potential FPs. Note the assumption was made that only white and yellow\orange lines are targeted for this assignment.
@@ -58,15 +58,16 @@ My pipeline consisted of multiple steps:
    afterwards to create a ROI and mask everything else outside it
 
 ```
-	# Canny edge detection
+    # Canny edge detection
     low_threshold = 50
     high_threshold = 150
     canny_image = canny(blur_gray, low_threshold, high_threshold)
-	```
-	```
-	imshape = canny_image.shape
-	vertices = np.array([[(ROI_BOTTOM_X,imshape[0]-ROI_BOTTOM_Y),(ROI_TOP_X, ROI_TOP_Y), (imshape[1]-ROI_TOP_X, ROI_TOP_Y), (imshape[1]-ROI_BOTTOM_X,imshape[0])]], dtype=np.int32)  
-	masked_canny_image = region_of_interest(canny_image, vertices)
+```
+
+```
+    imshape = canny_image.shape
+    vertices = np.array([[(ROI_BOTTOM_X,imshape[0]-ROI_BOTTOM_Y),(ROI_TOP_X, ROI_TOP_Y), (imshape[1]-ROI_TOP_X, ROI_TOP_Y), (imshape[1]-ROI_BOTTOM_X,imshape[0])]], dtype=np.int32)  
+    masked_canny_image = region_of_interest(canny_image, vertices)
 ```
 	
 - The resulting image is as follows:
@@ -76,7 +77,8 @@ My pipeline consisted of multiple steps:
 
 - From here the hough transform is called which in turn calls the draw_lines() which was adapted to handle line extrapolation and logic to decide where in the image the line was
   - As the output of the hough_lines() is lines we can use the slope to determine whether the lane is a left lane (negative) or right lane (positive). The slope can also be used to reject any potential FPs by ranging it between threshold values as can be seen in the following snippet
-```
+  
+ ```
 	slope = ((y2-y1)/(x2-x1))
             # Range the slope and remove any potential outliers
             # -ve lines are left lines
@@ -91,6 +93,8 @@ My pipeline consisted of multiple steps:
                 # Only draw segments if they meet the slope criteria
                 cv2.line(img, (x1, y1), (x2, y2), color, thickness)   
 ```
+- The following image illustrates the resulting detected road segments within the slope thresholds defined and the parameters used at the different stage. The approach I went for was having more smaller segmented lines so I have more data to fit a line through. Overall the results looks good
+![Raw Lines](test_image_output/raw_line_segments.jpg)
 
 - Afterwards the x and y lists are sorted to ensure points follow the flow of the lane. For example for a left lane; the point closest to the vehicle has image co-ordinates of (min(x) and max(y)) whilst the right lane has co-ordinates of (max(x), max(y)).
 
@@ -103,7 +107,7 @@ My pipeline consisted of multiple steps:
     
 ```
 
- - Now that all the points are sorted, the co-efficients and functional equation of the line can be computed. For the purpose of this assignment np.polyfit() and np.poly1d() was used:
+ - Now that all the points are sorted, the co-efficients and functional equation of the line can be computed. For the purpose of this assignment np.polyfit() (1st order polynomial) and np.poly1d() was used:
  	
 ```
  	# Calculate the co-efficients and functional equation of each line
@@ -113,20 +117,33 @@ My pipeline consisted of multiple steps:
     fx_right = np.poly1d(line_coef_right)
 ```
 
+- cv2.line() was used to fit the final line through the f(x) equations
+
+```
+cv2.line(img, (int(left_line_x[-1]), int(fx_left (int(left_line_x[-1])))), (ROI_BOTTOM_X, int(fx_left (ROI_BOTTOM_X))), color, thickness)    
+cv2.line(img, (int(right_line_x[0]), int(fx_right(int(right_line_x[0])))), (img.shape[1]-ROI_BOTTOM_X, int(fx_right(img.shape[1]-ROI_BOTTOM_X))), color, thickness) 
+```
+
+- The final resultant image and videos with the fitted overlays (in blue) and also the segmented results can be found in the following image and videos. As it can be seen, the fit is accurate for this data. In the next sections I will highlight the weaknesses and potential improvements.
+![Final Lines](test_image_output/final_line_outputs.jpg)
+
 
 
 ### 2. Identify potential shortcomings with your current pipeline
 
 
-One potential shortcoming would be what would happen when ... 
-
-Another shortcoming could be ...
+The pipeline has the following shortcomings:
+- In curved road scenes the first order model will not hold well and the resulting detection would be impacted accordingly.
+- Lines in other colours than white or yellow\orange may not be detected well. For example blue lines may be difficult to detect.
+- Lane changing scenarios may not be handled well as the lanes will be in the center of the image thus they might be detected well or rejected due to slope.
+- Nearby vehicles be it travelling in the same direction or in the opposite direction may cause FPs or affect the overall detection
 
 
 ### 3. Suggest possible improvements to your pipeline
 
-A possible improvement would be to ...
-
-Another potential improvement could be to ...
+The following highlights some key areas which could be improved upon:
+- The line fitting could possibly be improved using other libs\functions available or by writing my own
+- Keeping a history of the slopes to prevent any major jump in the slope of a line segment of a particular lane
+- The lenght of the line and its history could also in preventing any major jumps in the fitted line which may suggest FP detections
 
 

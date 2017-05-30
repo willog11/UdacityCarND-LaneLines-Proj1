@@ -129,6 +129,7 @@ cv2.line(img, (int(right_line_x[0]), int(fx_right(int(right_line_x[0])))), (img.
 
 ![Final Lines](test_images_output/final_line_outputs.jpg)
 
+<video src="test_videos_output/solidWhiteRight.mp4" width="320" height="200" controls preload></video>
 ![Final Lines Video 1](test_videos_output/solidWhiteRight.mp4)
 
 

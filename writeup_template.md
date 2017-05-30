@@ -71,7 +71,7 @@ My pipeline consisted of multiple steps:
 	
 - The resulting image is as follows:
 
-	![alt text](https://github.com/willog11/UdacityCarND-LaneLines-Proj1/tree/master/test_images_output/solidYellowCurve2_canny_maskedArea.jpg)
+![Canny Output](test_images_output\solidYellowCurve2_canny_maskedArea.JPG)
 	
 
 - From here the hough transform is called which in turn calls the draw_lines() which was adapted to handle line extrapolation and logic to decide where in the image the line was
@@ -105,13 +105,13 @@ My pipeline consisted of multiple steps:
 
  - Now that all the points are sorted, the co-efficients and functional equation of the line can be computed. For the purpose of this assignment np.polyfit() and np.poly1d() was used:
  	
- ```
+```
  	# Calculate the co-efficients and functional equation of each line
     line_coef_left = np.polyfit(left_line_x, left_line_y, 1)
     fx_left = np.poly1d(line_coef_left)    
     line_coef_right = np.polyfit(right_line_x, right_line_y, 1)
     fx_right = np.poly1d(line_coef_right)
-    ```
+```
 
 
 

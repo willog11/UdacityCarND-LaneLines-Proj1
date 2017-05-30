@@ -112,25 +112,30 @@ My pipeline consisted of multiple steps, at each point matplotlib was used to ge
  	
 ```
  	# Calculate the co-efficients and functional equation of each line
-    line_coef_left = np.polyfit(left_line_x, left_line_y, 1)
-    fx_left = np.poly1d(line_coef_left)    
-    line_coef_right = np.polyfit(right_line_x, right_line_y, 1)
-    fx_right = np.poly1d(line_coef_right)
+    if len(left_line_x) > 0 and len(left_line_y) > 0:
+        line_coef_left = np.polyfit(left_line_x, left_line_y, 1)
+        fx_left = np.poly1d(line_coef_left)
+    if len(right_line_x) > 0 and len(right_line_y) > 0:
+        line_coef_right = np.polyfit(right_line_x, right_line_y, 1)
+        fx_right = np.poly1d(line_coef_right)
 ```
 
 - cv2.line() was used to fit the final line through the f(x) equations
 
 ```
-cv2.line(img, (int(left_line_x[-1]), int(fx_left (int(left_line_x[-1])))), (ROI_BOTTOM_X, int(fx_left (ROI_BOTTOM_X))), color, thickness)    
-cv2.line(img, (int(right_line_x[0]), int(fx_right(int(right_line_x[0])))), (img.shape[1]-ROI_BOTTOM_X, int(fx_right(img.shape[1]-ROI_BOTTOM_X))), color, thickness) 
+# Fit the lines
+    if len(left_line_x) > 0 and len(fx_left) > 0:
+        cv2.line(img, (int(left_line_x[-1]), int(fx_left(int(left_line_x[-1])))), (ROI_BOTTOM_X, int(fx_left(ROI_BOTTOM_X))), color, thickness)
+    if len(right_line_x) > 0 and len(fx_right) > 0:
+        cv2.line(img, (int(right_line_x[0]), int(fx_right(int(right_line_x[0])))), (img.shape[1]-ROI_BOTTOM_X, int(fx_right(img.shape[1]-ROI_BOTTOM_X))), color, thickness) 
 ```
 
 - The final resultant image and videos with the fitted overlays (in blue) and also the segmented results can be found in the following image and videos. As it can be seen, the fit is accurate for this data. In the next sections I will highlight the weaknesses and potential improvements.
 
 ![Final Lines](test_images_output/final_line_outputs.jpg)
 
-<video src="test_videos_output/solidWhiteRight.mp4" width="320" height="200" controls preload></video>
-![Final Lines Video 1](test_videos_output/solidWhiteRight.mp4)
+**Solid White Right Result**
+![Final Lines Video 1](test_videos_output/solidWhiteRight.gif)
 
 
 
@@ -148,7 +153,7 @@ The pipeline has the following shortcomings:
 
 The following highlights some key areas which could be improved upon:
 - The line fitting could possibly be improved using other libs\functions available or by writing my own
-- Keeping a history of the slopes to prevent any major jump in the slope of a line segment of a particular lane
-- The lenght of the line and its history could also in preventing any major jumps in the fitted line which may suggest FP detections
+- Keeping a history of the slopes and lines so that weighting could be applied to the current frame base on the previous frame(s)
+- The length of the line and its history could also in preventing any major jumps in the fitted line which may suggest FP detections
 
 

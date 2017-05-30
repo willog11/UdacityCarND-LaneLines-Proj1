@@ -71,7 +71,7 @@ My pipeline consisted of multiple steps:
 	
 - The resulting image is as follows:
 
-![Canny Output](test_images_output\solidYellowCurve2_canny_maskedArea.JPG)
+![Canny Output](test_images_output\solidYellowCurve2_canny_maskedArea.JPG?raw=true)
 	
 
 - From here the hough transform is called which in turn calls the draw_lines() which was adapted to handle line extrapolation and logic to decide where in the image the line was

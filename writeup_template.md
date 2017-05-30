@@ -94,6 +94,7 @@ My pipeline consisted of multiple steps, at each point matplotlib was used to ge
                 cv2.line(img, (x1, y1), (x2, y2), color, thickness)   
 ```
 - The following image illustrates the resulting detected road segments within the slope thresholds defined and the parameters used at the different stage. The approach I went for was having more smaller segmented lines so I have more data to fit a line through. Overall the results looks good
+
 ![Raw Lines](test_image_output/raw_line_segments.jpg)
 
 - Afterwards the x and y lists are sorted to ensure points follow the flow of the lane. For example for a left lane; the point closest to the vehicle has image co-ordinates of (min(x) and max(y)) whilst the right lane has co-ordinates of (max(x), max(y)).
@@ -125,6 +126,7 @@ cv2.line(img, (int(right_line_x[0]), int(fx_right(int(right_line_x[0])))), (img.
 ```
 
 - The final resultant image and videos with the fitted overlays (in blue) and also the segmented results can be found in the following image and videos. As it can be seen, the fit is accurate for this data. In the next sections I will highlight the weaknesses and potential improvements.
+
 ![Final Lines](test_image_output/final_line_outputs.jpg)
 
 
